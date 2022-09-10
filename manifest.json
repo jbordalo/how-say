@@ -1,0 +1,36 @@
+{
+  "manifest_version": 3,
+  "name": "HowSay",
+  "version": "1.0.0",
+  "description": "Search Merriam-Webster",
+  "action": {
+    "default_icon": "assets/icon.png",
+    "default_popup": "popup.html"
+  },
+  "commands": {
+    "search-merriam": {
+      "suggested_key": {
+        "default": "Ctrl+M",
+        "mac": "MacCtrl+M"
+      },
+      "description": "Searches for selected word in Merriam-Webster"
+    }
+  },
+  "background": {
+    "service_worker": "background.js"
+  },
+  "permissions": [
+    "contextMenus",
+    "scripting"
+  ],
+  "host_permissions": [
+    "http://*/*",
+    "https://*/*",
+    "file:///*"
+  ],
+  "icons": {
+    "16": "assets/icon16.png",
+    "48": "assets/icon48.png",
+    "128": "assets/icon128.png"
+  }
+}
