@@ -13,6 +13,8 @@ function searchMerriamWebster(word) {
     });
 }
 
+// CONTEXT MENUS
+
 chrome.contextMenus.create({
     id: CONTEXT_MENU_ID, 
     title: "Search Merriam-Webster for \"%s\"", 
@@ -20,10 +22,13 @@ chrome.contextMenus.create({
 });
 
 chrome.contextMenus.onClicked.addListener((info, tab) => {
-    if (info.menuItemId !== CONTEXT_MENU_ID) {
-        return;
+    switch (info.menuItemId) {
+        case CONTEXT_MENU_ID:
+            searchMerriamWebster(info.selectionText)
+            break;
+        default:
+            break;
     }
-    searchMerriamWebster(info.selectionText)
 })
 
 // COMMANDS
@@ -41,7 +46,7 @@ chrome.commands.onCommand.addListener(function (command) {
 
                         if (word == '') return;
 
-                        chrome.runtime.sendMessage({value: word}, null);
+                        chrome.runtime.sendMessage({msg:"search-merriam", data: word}, null);
                     },
                   })
               })
@@ -55,8 +60,9 @@ chrome.commands.onCommand.addListener(function (command) {
 
 chrome.runtime.onMessage.addListener(
     function receiveWord(request, sender, sendResponse) {
-        const word = request.value;
-
-        searchMerriamWebster(word);
+        if (request.msg == "search-merriam") {
+            const word = request.data;
+            searchMerriamWebster(word);
+        }
     }
 );

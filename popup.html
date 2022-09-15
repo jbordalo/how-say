@@ -1,5 +1,3 @@
-<!-- Extension initialized with https://github.com/virejdasani/Chrome-Extension-Boilerplate -->
-
 <!DOCTYPE html>
 <html lang="en">
 
@@ -15,20 +13,51 @@
 </head>
 
 <body>
-  
-  <div class="wrapper">  
-      <h1>HowSay</h1>
-      
-      <p>
-        Search 
-        <a href="https://www.merriam-webster.com/" class="url" target="_blank">Merriam-Webster</a>
-        for the selected word.
-      </p>
 
-      <p>Word of the Day: </p>
-      
-      <p>Shortcut: CTRL+M</p>
+
+  <div class="wrapper">
+    <h1>HowSay</h1>
+
+    <p>
+      Search
+      <a href="https://www.merriam-webster.com/" class="url" target="_blank">Merriam-Webster</a>
+      for the selected word.
+    </p>
+
+    <form>
+      <input type="text" id="query">
+      <input type="button" value="Define" id="define-word">
+    </form>
+
+    <div class="information-wrapper">
+
+      <div class="line">  
+        <b id="word">voluminous</b>
+        <p id="pos">adjective</p>
+      </div>
+
+      <div class="line">
+        <p id="syllables">vo·​lu·​mi·​nous</p>
+        <p class="separator">|</p>
+        <p id="pronunciation">və-ˈlü-mə-nəs</p>
+      </div>
+
+      <div id="definition">
+        <p>having or marked by great volume or bulk : large; also : full</p>
+        <p>numerous</p>
+        <p>filling or capable of filling a large volume or several volumes</p>
+      </div>
+
+      <audio controls id="player">
+        <source id="audio_source" src="https://media.merriam-webster.com/audio/prons/en/us/mp3/v/volumi02.mp3" />
+      </audio>
+
+    </div>
+
+    <p>Shortcut: CTRL+M</p>
   </div>
+
+  <script src="popup.js"></script>
 </body>
 
 </html>

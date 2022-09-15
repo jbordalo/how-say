@@ -9,8 +9,52 @@ body {
   padding-left: 0px;
   padding-right: 0px;
   margin: auto;
+
+  background-color: antiquewhite;
 }
 
 a {
+  color: rgb(207, 117, 0);
   text-decoration: none;
+}
+
+a:visited {
+  color: rgb(207, 117, 0);
+}
+
+a:hover {
+  text-decoration: underline;
+}
+
+.information-wrapper {
+  margin-top: 10px;
+}
+
+.line p {
+  display: inline;
+}
+
+.line {
+  margin-bottom: 10px;
+}
+
+p {
+  font-size: 15px;
+}
+
+.separator {
+  padding: 0 5px;
+}
+
+#word {
+  font-size: 25px;
+}
+
+#definition {
+  text-align: justify;
+  padding: 0 10px;
+}
+
+#definition p {
+  margin: 10px 0;
 }
