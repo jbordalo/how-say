@@ -17,6 +17,16 @@
       "global": false
     }
   },
+  "content_scripts": [
+    {
+      "matches": [
+        "http://*/*",
+        "https://*/*",
+        "file:///*"
+      ],
+      "js": ["content.js"]
+    }
+  ],
   "background": {
     "service_worker": "background.js"
   },

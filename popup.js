@@ -1,15 +1,12 @@
 console.log("popup.js loaded");
 
-chrome.runtime.sendMessage({msg:"request-selected"}, null);
-
-chrome.runtime.onMessage.addListener(
-    function receiveWord(request, sender, sendResponse) {
-        if (request.msg == "word") {
-            const word = request.data;
-            _defineWord(word);
+chrome.tabs.query({ active: true, currentWindow: true }, function (tabs) {
+    chrome.tabs.sendMessage(tabs[0].id, { command: "request-selected" }, function (response) {
+        if (!response.err) {
+            _defineWord(response.word)
         }
-    }
-);
+    });
+});
 
 const $query = document.getElementById("query");
 
@@ -52,22 +49,19 @@ async function getData(word) {
     return data;
 }
 
-// try audio.load()
-
+// TODO: Add word instead of taking the word from the query
 function parseResponse(response) {
     return {
         definition: response["0"]["shortdef"],
         pos: response["0"]["fl"],
         syllables: response["0"]["hwi"]["hw"],
+        // TODO: pronunciation doesn't always exist
         pronunciation: response["0"]["hwi"]["prs"]["0"]["mw"],
         audio: response["0"]["hwi"]["prs"]["0"]["sound"]["audio"]
     }
 }
 
 function populateDefinition(definition) {
-    
-    console.log(definition);
-
     $definition.innerHTML = "";
 
     definition.forEach(element => {
@@ -87,7 +81,7 @@ async function defineWord() {
 
 async function _defineWord(query) {
     console.log(`searching for word '${query}'`);
-    
+
     const response = await getData(query);
 
     console.log(response);
@@ -98,7 +92,7 @@ async function _defineWord(query) {
     $pos.innerHTML = responseObject.pos;
 
     populateDefinition(responseObject.definition)
-    
+
     $audio_source.src = getAudio(responseObject.audio);
     document.getElementById("player").load();
 
