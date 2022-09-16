@@ -1,5 +1,16 @@
 console.log("popup.js loaded");
 
+chrome.runtime.sendMessage({msg:"request-selected"}, null);
+
+chrome.runtime.onMessage.addListener(
+    function receiveWord(request, sender, sendResponse) {
+        if (request.msg == "word") {
+            const word = request.data;
+            _defineWord(word);
+        }
+    }
+);
+
 const $query = document.getElementById("query");
 
 const $word = document.getElementById("word");
@@ -71,7 +82,10 @@ function populateDefinition(definition) {
 }
 
 async function defineWord() {
-    const query = $query.value;
+    _defineWord($query.value);
+}
+
+async function _defineWord(query) {
     console.log(`searching for word '${query}'`);
     
     const response = await getData(query);
@@ -90,5 +104,4 @@ async function defineWord() {
 
     $syllables.innerHTML = responseObject.syllables.replaceAll("*", SYLLABLE_SEPARATOR);
     $pronunciation.innerHTML = responseObject.pronunciation;
-
 }

@@ -63,6 +63,20 @@ chrome.runtime.onMessage.addListener(
         if (request.msg == "search-merriam") {
             const word = request.data;
             searchMerriamWebster(word);
+        } else if (request.msg == "request-selected") {
+            chrome.tabs.query({active: true, currentWindow: true}).then(([tab]) => {
+                chrome.scripting.executeScript(
+                  {
+                    target: {tabId: tab.id},
+                    function: () => {
+                        const word = window.getSelection().toString();
+
+                        if (word == '') return;
+
+                        chrome.runtime.sendMessage({msg:"word", data: word}, null);
+                    },
+                  })
+              })
         }
     }
 );
