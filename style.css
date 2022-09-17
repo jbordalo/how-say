@@ -30,7 +30,7 @@ a:hover {
   margin-top: 10px;
 }
 
-.line p {
+.line * {
   display: inline;
 }
 
@@ -48,6 +48,7 @@ p {
 
 #word {
   font-size: 25px;
+  padding-right: 5px;
 }
 
 #definition {
@@ -57,4 +58,11 @@ p {
 
 #definition p {
   margin: 10px 0;
+}
+
+#pronounce-button {
+  width: 25px;
+  height: 25px;
+  vertical-align: sub;
+  margin-left: 10px;
 }
