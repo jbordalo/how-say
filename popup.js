@@ -24,6 +24,9 @@ const $pronounce_button = document.getElementById("pronounce-button")
 
 const $submitButton = document.getElementById("define-word");
 
+const $error = document.getElementById("error");
+const $separator = document.getElementById("separator");
+
 // EVENT LISTENERS
 
 $submitButton.addEventListener("click", defineWord);
@@ -62,6 +65,10 @@ async function getData(word) {
     return data;
 }
 
+function getErrorMessage(query) {
+    return `No results for "${query}"`;
+}
+
 function parseWord(id) {
     return id.split(":")[0];
 }
@@ -97,10 +104,14 @@ function populateDefinition(definitions) {
         // Create a paragraph
         const p = document.createElement("p");
         // Change its text
-        p.innerHTML = formatDefinition(definition, i == definitions.length - 1);
+        setInnerHTML(p, formatDefinition(definition, i == definitions.length - 1));
         // Add to definition div
         $definition.appendChild(p);
     }
+}
+
+function validateResponse(response) {
+    return response["0"] !== undefined && response["0"]["meta"] !== undefined;
 }
 
 async function defineWord() {
@@ -110,26 +121,63 @@ async function defineWord() {
 async function _defineWord(query) {
     console.log(`searching for word '${query}'`);
 
-    // TODO: Error Handling
     const response = await getData(query);
 
     console.log(response);
 
-    const responseObject = parseResponse(response);
-
-    $word.innerHTML = responseObject.word;
-    $pos.innerHTML = responseObject.pos;
-
-    populateDefinition(responseObject.definitions)
-
-    if (responseObject.audio != "") {
-        $audio_source.src = getAudio(responseObject.audio);
-        document.getElementById("player").load();
-        $pronounce_button.style.visibility = "visible";
-    } else {
-        $pronounce_button.style.visibility = "hidden";
+    if (!validateResponse(response)) {
+        clear()
+        setInnerHTML($error, getErrorMessage(query));
+        show($error, "block");
+        return;
     }
 
-    $syllables.innerHTML = responseObject.syllables.replaceAll("*", BULLET);
-    $pronunciation.innerHTML = responseObject.pronunciation;
+    reset();
+    hide($error);
+
+    const { word, pos, definitions, syllables, pronunciation, audio } = parseResponse(response);
+
+    setInnerHTML($word, word);
+    setInnerHTML($pos, pos);
+
+    populateDefinition(definitions)
+
+    if (audio !== "") {
+        $audio_source.src = getAudio(audio);
+        $player.load();
+        show($pronounce_button);
+    } else {
+        hide($pronounce_button);
+    }
+
+    console.log(syllables, pronunciation, audio);
+
+    setInnerHTML($syllables, syllables.replaceAll("*", BULLET));
+    setInnerHTML($pronunciation, pronunciation)
+}
+
+function setInnerHTML(elem, value) {
+    elem.innerHTML = value;
+}
+
+function clear() {
+    [$word, $pos, $syllables, $pronunciation, $definition, $separator].forEach(elem => {
+        hide(elem);
+    });
+    hide($pronounce_button);
+}
+
+function reset() {
+    [$word, $pos, $syllables, $pronunciation, $separator].forEach(elem => {
+        show(elem);
+    });
+    show($definition, "block");
+}
+
+function show(element, mode="inline") {
+    element.style.display = mode;
+}
+
+function hide(element) {
+    element.style.display = "none";
 }

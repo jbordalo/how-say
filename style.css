@@ -42,8 +42,9 @@ p {
   font-size: 15px;
 }
 
-.separator {
+#separator {
   padding: 0 5px;
+  display: none;
 }
 
 #word {
@@ -65,4 +66,9 @@ p {
   height: 25px;
   vertical-align: sub;
   margin-left: 10px;
+  display: none;
+}
+
+#error {
+  font-size: 20px;
 }
