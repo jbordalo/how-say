@@ -47,6 +47,9 @@ const PATTERN = /^([_.,:!?]|[0-9])/
 
 const BULLET = "·"
 
+// Focus text input on popup open
+
+$query.focus();
 
 function getUrl(word) {
     return `https://www.dictionaryapi.com/api/v3/references/collegiate/json/${word}?key=${API_KEY}`
