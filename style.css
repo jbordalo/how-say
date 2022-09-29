@@ -73,13 +73,13 @@ p {
   font-size: 20px;
 }
 
-#define-word {
+#define-button {
   background-color: rgb(243, 176, 89);
   border: none;
   margin-left: 3px;
   height: 20px;
 }
 
-#define-word:hover {
+#define-button:hover {
   border: 1px solid rgb(207, 117, 0);
 }

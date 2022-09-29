@@ -10,6 +10,7 @@ chrome.tabs.query({ active: true, currentWindow: true }, function (tabs) {
 
 // ELEMENTS 
 
+const $form = document.getElementById("form");
 const $query = document.getElementById("query");
 
 const $word = document.getElementById("word");
@@ -22,14 +23,15 @@ const $pronunciation = document.getElementById("pronunciation");
 const $player = document.getElementById("player");
 const $pronounce_button = document.getElementById("pronounce-button")
 
-const $submitButton = document.getElementById("define-word");
-
 const $error = document.getElementById("error");
 const $separator = document.getElementById("separator");
 
 // EVENT LISTENERS
 
-$submitButton.addEventListener("click", defineWord);
+$form.addEventListener("submit", e => {
+    e.preventDefault();
+    defineWord();
+});
 
 $pronounce_button.addEventListener("click", playAudio);
 
@@ -37,11 +39,14 @@ function playAudio() {
     $player.play();
 }
 
+// CONSTANTS
+
 const API_KEY = "<API_KEY>";
 
 const PATTERN = /^([_.,:!?]|[0-9])/
 
 const BULLET = "·"
+
 
 function getUrl(word) {
     return `https://www.dictionaryapi.com/api/v3/references/collegiate/json/${word}?key=${API_KEY}`
@@ -74,7 +79,7 @@ function parseWord(id) {
 }
 
 function parseResponse(response) {
-    
+
     const responseObject = {
         word: parseWord(response["0"]["meta"]["id"]),
         definitions: response["0"]["shortdef"],
@@ -174,7 +179,7 @@ function reset() {
     show($definition, "block");
 }
 
-function show(element, mode="inline") {
+function show(element, mode = "inline") {
     element.style.display = mode;
 }
 
