@@ -23,6 +23,8 @@ const $pronunciation = document.getElementById("pronunciation");
 const $player = document.getElementById("player");
 const $pronounce_button = document.getElementById("pronounce-button")
 
+const $alternatives = document.getElementById("alternatives")
+
 const $error = document.getElementById("error");
 const $separator = document.getElementById("separator");
 
@@ -46,6 +48,8 @@ const API_KEY = "<API_KEY>";
 const PATTERN = /^([_.,:!?]|[0-9])/
 
 const BULLET = "·"
+
+const MAX_ALTERNATIVES = 3;
 
 // Focus text input on popup open
 
@@ -74,7 +78,7 @@ async function getData(word) {
 }
 
 function getErrorMessage(query) {
-    return `No results for "${query}"`;
+    return `No results for "${query}".`;
 }
 
 function parseWord(id) {
@@ -118,6 +122,11 @@ function populateDefinition(definitions) {
     }
 }
 
+
+function formatAlternatives(alternatives) {
+    $alternatives.innerHTML = `Try: ${alternatives.map(x => `"${x}"`).join(", ")}`;
+}
+
 function validateResponse(response) {
     return response["0"] !== undefined && response["0"]["meta"] !== undefined;
 }
@@ -134,14 +143,21 @@ async function _defineWord(query) {
     console.log(response);
 
     if (!validateResponse(response)) {
+        
+        response.forEach(element => {
+            console.log(element);
+        });
         clear()
         setInnerHTML($error, getErrorMessage(query));
         show($error, "block");
+
+        formatAlternatives(response.slice(0, MAX_ALTERNATIVES));       
+        show($alternatives);
         return;
     }
 
     reset();
-    hide($error);
+    hide($error); hide($alternatives);
 
     const { word, pos, definitions, syllables, pronunciation, audio } = parseResponse(response);
 

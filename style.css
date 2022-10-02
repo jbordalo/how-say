@@ -73,6 +73,10 @@ p {
   font-size: 20px;
 }
 
+#alternatives {
+  font-size: 20px;
+}
+
 #define-button {
   background-color: rgb(243, 176, 89);
   border: none;
