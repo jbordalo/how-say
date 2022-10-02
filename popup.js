@@ -185,10 +185,9 @@ function setInnerHTML(elem, value) {
 }
 
 function clear() {
-    [$word, $pos, $syllables, $pronunciation, $definition, $separator].forEach(elem => {
+    [$word, $pos, $syllables, $pronunciation, $pronounce_button, $definition, $separator].forEach(elem => {
         hide(elem);
     });
-    hide($pronounce_button);
 }
 
 function reset() {
