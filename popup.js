@@ -136,17 +136,9 @@ async function defineWord() {
 }
 
 async function _defineWord(query) {
-    console.log(`searching for word '${query}'`);
-
     const response = await getData(query);
 
-    console.log(response);
-
     if (!validateResponse(response)) {
-        
-        response.forEach(element => {
-            console.log(element);
-        });
         clear()
         setInnerHTML($error, getErrorMessage(query));
         show($error, "block");
@@ -173,8 +165,6 @@ async function _defineWord(query) {
     } else {
         hide($pronounce_button);
     }
-
-    console.log(syllables, pronunciation, audio);
 
     setInnerHTML($syllables, syllables.replaceAll("*", BULLET));
     setInnerHTML($pronunciation, pronunciation)
