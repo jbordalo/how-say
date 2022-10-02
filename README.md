@@ -3,3 +3,5 @@
 ![HowSay logo](/assets/icon128.png "HowSay logo")
 
 Extension to search Merriam-Webster for words.
+
+![Example](/figures/example.png)
